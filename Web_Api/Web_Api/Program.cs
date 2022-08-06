@@ -1,5 +1,9 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using Web_Api.Data;
+using Web_Api.Models;
 
+var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -7,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContextPool<manager_sellerContext>(options => options.UseSqlServer(configuration.GetConnectionString("sqlDefault")));
+
+builder.Services.AddScoped<IManagerSeller, ManagerSellerSql>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
